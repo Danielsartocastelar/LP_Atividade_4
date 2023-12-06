@@ -1,0 +1,23 @@
+import sqlite3
+
+# Conectando ao banco de dados
+conn = sqlite3.connect('imc.db')
+
+# Criando a tabela
+conn.execute('''CREATE TABLE IF NOT EXISTS imc (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    altura REAL NOT NULL,
+    peso REAL NOT NULL,
+    imc REAL NOT NULL
+)''')
+
+# Função para calcular o IMC
+def calcular_imc(nome, altura, peso):
+    imc = peso / (altura ** 2)
+    conn.execute(f"INSERT INTO imc (nome, altura, peso, imc) VALUES ('{nome}', {altura}, {peso}, {imc})")
+    conn.commit()
+    print(f"O IMC de {nome} é {imc:.2f}")
+
+# Exemplo de uso
+calcular_imc('João', 1.75, 80)
